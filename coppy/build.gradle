@@ -1,0 +1,82 @@
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+    id "maven-publish"
+}
+
+apply plugin: "maven-publish"
+
+def artifactId = "core"
+def groupId = "org.prototypic.coppy"
+
+android {
+    namespace = "org.prototypic.coppy"
+    compileSdk = 33
+
+    defaultConfig {
+        minSdk = 24
+        targetSdk = 33
+        versionCode = 1
+        versionName = "1.0.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled = false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation("androidx.lifecycle:lifecycle-process:2.6.1")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.compose.ui:ui:1.4.0")
+    implementation("androidx.core:core-ktx:1.9.0")
+
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            library(MavenPublication) {
+                setGroupId(groupId)
+                setArtifactId(artifactId)
+                version android.defaultConfig.versionName
+
+                artifact bundleReleaseAar
+
+                pom.withXml() {
+                    def dependenciesNode = asNode().appendNode("dependencies")
+                    configurations.releaseRuntimeElements.allDependencies
+                            .findAll {
+                                it.name != null && it.name != "unspecified" && it.version != "unspecified"
+                            }.each {
+                        def dependencyNode = dependenciesNode.appendNode("dependency")
+                        dependencyNode.appendNode("groupId", it.group)
+                        dependencyNode.appendNode("artifactId", it.name)
+                        dependencyNode.appendNode("version", it.version)
+                        dependencyNode.appendNode("scope", "compile")
+                    }
+                }
+
+                println("publishing: " + groupId)
+                println("publishing: " + artifactId)
+                println("publishing: " + version)
+                println("publishing: " + bundleReleaseAar)
+            }
+        }
+    }
+}
