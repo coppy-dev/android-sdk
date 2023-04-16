@@ -21,7 +21,7 @@ class CoppyPluginTest {
     private lateinit var manifestFile: File
     private lateinit var updatedManifestFile: File
 
-    var testSpaceKey = "9JS8jRHqyi4Vg0_DnqGTy|||RMB7j6~HN9oFAmCzSQMptUNq9ZZwPozViWr41rnHRwvfBiTdnY~jccvYk-hQzEWkUOqENZO1IshssU9zfNaP9by6R27af3OeuNZivorZE6~y-ZjsMObEIWEIM6r40ORXrBXfx3jwQ2xxri1Ryr4gstjEBCBweS3PaS8ucsOrhuQLIUutS1IEINgN0MMmAdQN8uQQs-0SS1PSfBr1KbxknWeGF0zYjyLEGGaRp2rqyPwZy9i-7ulbdOeq9HvelRFAJvm9Rql3vHijRfbN5KooiFys37og26cptA8S9Tn5aqk~Jzinb4QV6lA45avnvIn0nM21qZagGJ5BNQ26HfGrJA__|||K3SO3M13RHB57K|||7258118400"
+    var testSpaceKey = "9JS8jRHqyi4Vg0_DnqGTy"
 
     @BeforeEach
     fun setup() {

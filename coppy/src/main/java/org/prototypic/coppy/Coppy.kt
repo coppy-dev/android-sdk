@@ -21,7 +21,6 @@ class CoppyUpdateWorker(val appContext: Context, workerParams: WorkerParameters)
     override fun doWork(): Result {
         val config = CoppyUtils.getConfig(appContext)
         if (config == null) {
-            println("CoppyUpdateWorker.doWork: Config not found. Please check your configuration.")
             return Result.success()
         }
         val properties = this.appContext.getSharedPreferences(config.propertiesKey, Context.MODE_PRIVATE)
@@ -46,12 +45,9 @@ class CoppyUpdateWorker(val appContext: Context, workerParams: WorkerParameters)
             properties.edit().putString("eTag", contentETag).apply()
 
             if (config.updateType == "foreground") {
-                println("Coppy: will update in foreground")
                 if (Coppy._content != null) {
-                    println("Coppy:foreground: content is not null")
                     Coppy._content?.value = newContent
                 } else {
-                    println("Coppy:foreground: content is null")
                     Coppy._content = MutableStateFlow(newContent)
                 }
             }
@@ -60,10 +56,9 @@ class CoppyUpdateWorker(val appContext: Context, workerParams: WorkerParameters)
         return Result.success()
     }
     private fun readUrl(url: URL): JSONObject {
-        var result: JSONObject
         val input = url.openStream()
         val reader = BufferedReader(InputStreamReader(input))
-        result = JSONObject(reader.readText())
+        val result = JSONObject(reader.readText())
         reader.close()
         input.close();
 
@@ -166,7 +161,6 @@ object Coppy {
 
         val config = CoppyUtils.getConfig(appContext)
         if (config == null) {
-            println("Coppy.inititalize: No config found")
             return
         }
 
@@ -185,7 +179,6 @@ object Coppy {
     internal fun readContent(appContext: Context): Any? {
         val config = CoppyUtils.getConfig(appContext)
         if (config == null) {
-            println("Coppy.readContent: No config found")
             return null
         }
 
@@ -199,9 +192,8 @@ object Coppy {
 
             inStream.close()
             file.close()
-        } finally {
-            return content
-        }
+        } catch (err: Exception) {}
+        return content
     }
 }
 
@@ -222,15 +214,10 @@ class CoppySwapWorker(val appContext: Context, workerParams: WorkerParameters):
         val properties = this.appContext.getSharedPreferences(config.propertiesKey, Context.MODE_PRIVATE)
         val eTag = properties.getString("eTag", null)
         val appliedContentETag = properties.getString("appliedETag", null)
-        println("read eTags")
 
         if (eTag != null && appliedContentETag != null && eTag == appliedContentETag) return Result.success()
 
-        println("eTags are different")
-
         val contentFromFile = Coppy.readContent(this.appContext)
-        println("read content from file")
-
         if (contentFromFile != null) {
             if (Coppy._content != null) {
                 Coppy._content?.value = contentFromFile
