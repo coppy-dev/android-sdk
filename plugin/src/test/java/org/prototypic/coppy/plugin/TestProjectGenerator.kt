@@ -67,7 +67,7 @@ class TestProjectGenerator(
         var gradleContent = """
             plugins {
                 id 'com.android.application'
-                id 'org.prototypic.coppy.plugin'
+                id 'org.prototypic.coppy.generator'
             }
             
             android {
@@ -88,7 +88,7 @@ class TestProjectGenerator(
         if (config != null) {
             gradleContent += """
                 |coppy {
-                |    spaceKey = "${config.spaceKey}"${if (config.updateType == null) "" else "\n|    updateType = \"${config.updateType}\""}
+                |    spaceKey = "${config.spaceKey}"${if (config.updateType == null) "" else "\n|    updateType = \"${config.updateType}\""}${if (config.updateInterval == null) "" else "\n|    updateInterval = ${config.updateInterval}"}
                 |}
             """.trimMargin()
         }
@@ -110,5 +110,6 @@ class TestProjectGenerator(
     class AppConfig(
         val spaceKey: String,
         val updateType: String?,
+        val updateInterval: Int?
     )
 }

@@ -91,7 +91,8 @@ class CoppyConfig (
     val contentDir: String,
     val contentFileName: String,
     val propertiesKey: String,
-    val updateType: String
+    val updateType: String,
+    val updateInterval: Int
 )
 
 object CoppyUtils {
@@ -101,7 +102,8 @@ object CoppyUtils {
         if (metaData == null) return null
 
         val spaceKey = metaData.getString("org.prototypic.coppy.spaceKey")
-        val updateType = metaData.getString("org.prototypic.coppy.updateType")
+        val updateType = metaData.getString("org.prototypic.coppy.updateType", "default")
+        val updateInterval = metaData.getInt("org.prototypic.coppy.updateInterval", 30)
         if (spaceKey == null) return null
 
         return CoppyConfig(
@@ -109,7 +111,8 @@ object CoppyUtils {
             spaceKey,
             context.packageManager.getPackageVersionCompat(context.packageName).toString(),
             "${context.packageName}.coppy.${spaceKey}",
-            updateType ?: "default")
+            updateType,
+            updateInterval)
     }
 }
 
@@ -169,7 +172,7 @@ object Coppy {
         }
 
         val constraints = Constraints.Builder().setRequiresBatteryNotLow(true).build()
-        val coppyWorkRequest: PeriodicWorkRequest = PeriodicWorkRequestBuilder<CoppyUpdateWorker>(3, TimeUnit.MINUTES)
+        val coppyWorkRequest: PeriodicWorkRequest = PeriodicWorkRequestBuilder<CoppyUpdateWorker>(config.updateInterval.toLong(), TimeUnit.MINUTES)
             .setConstraints(constraints)
             .build()
 
