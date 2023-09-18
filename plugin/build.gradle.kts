@@ -7,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 
 group = "org.prototypic.coppy.generator"
@@ -85,12 +85,12 @@ publishing {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:7.3.1")
-    implementation("org.json:json:20180813")
-    implementation("org.apache.commons:commons-text:1.10.0")
+    implementation("com.android.tools.build:gradle:[7.3.1,)")
+    implementation("org.json:json:[20180813,)")
+    implementation("org.apache.commons:commons-text:[1.10.0,)")
 
     testImplementation(gradleTestKit())
-    testImplementation("com.android.tools:common:30.4.2")
+    testImplementation("com.android.tools:common:31.1.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }

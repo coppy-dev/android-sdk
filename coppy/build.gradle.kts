@@ -37,10 +37,10 @@ android {
 }
 
 dependencies {
-    implementation("androidx.lifecycle:lifecycle-process:2.6.1")
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
-    implementation("androidx.compose.ui:ui:1.4.1")
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.lifecycle:lifecycle-process:[2.6.1,)")
+    implementation("androidx.work:work-runtime-ktx:[2.8.1,)")
+    implementation("androidx.compose.ui:ui:[1.4.1,)")
+    implementation("androidx.core:core-ktx:[1.10.0,)")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -51,7 +51,6 @@ publishing {
     publications {
         register<MavenPublication>("release") {
             artifactId = "core"
-//            groupId = group.toString()
 
             afterEvaluate {
                 from(components["release"])
