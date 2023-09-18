@@ -1,4 +1,4 @@
-package org.prototypic.coppy.plugin
+package app.coppy.plugin
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.dsl.AndroidSourceSet

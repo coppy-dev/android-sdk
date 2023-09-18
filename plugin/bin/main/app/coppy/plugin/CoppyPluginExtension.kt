@@ -1,6 +1,6 @@
-package org.prototypic.coppy.plugin
+package app.coppy.plugin
 abstract class CoppyPluginExtension() {
-    abstract var spaceKey: String?
+    abstract var contentKey: String?
     var updateType: String? = null
     var updateInterval: Int? = null
 }

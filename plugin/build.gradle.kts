@@ -10,17 +10,17 @@ kotlin {
     jvmToolchain(17)
 }
 
-group = "org.prototypic.coppy.generator"
+group = "app.coppy"
 version = "1.0.0-SNAPSHOT"
 
 gradlePlugin {
-    website.set("https://prototypic.org")
+    website.set("https://coppy.app")
     vcsUrl.set("https://github.com/coppy-dev/android-sdk.git")
 
     plugins {
         create("generator") {
-            id = "org.prototypic.coppy.generator"
-            implementationClass = "org.prototypic.coppy.plugin.CoppyPlugin"
+            id = "app.coppy"
+            implementationClass = "app.coppy.plugin.CoppyPlugin"
             displayName = "Coppy"
             description =
                 "Plugin for Android application to generate Coppy content classes. Companion for the Coppy SDK."
@@ -36,19 +36,19 @@ publishing {
 
             pom {
                 name.set("Coppy Android SDK")
-                description.set("Coppy SDK: headles CMS for your app copy")
+                description.set("Plugin for Android application to generate Coppy content classes. Companion for the Coppy SDK.")
                 url.set("https://coppy.app")
                 inceptionYear.set("2023")
                 developers {
                     developer {
                         name.set("Coppy Team")
-                        organization.set("Prototypic")
-                        email.set("coppy@prototypic.org")
+                        organization.set("Coppy")
+                        email.set("team@coppy.app")
                     }
                 }
                 organization {
-                    name.set("Prototypic")
-                    url.set("https://prototypic.org")
+                    name.set("Coppy")
+                    url.set("https://coppy.app")
                 }
                 licenses {
                     license {

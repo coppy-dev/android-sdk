@@ -1,4 +1,4 @@
-package org.prototypic.coppy.plugin
+package app.coppy.plugin
 
 import java.io.File
 
@@ -6,7 +6,6 @@ import java.io.File
 class TestProjectGenerator(
     val projectDirectory: File,
 ) {
-
     val appDirectory = File(projectDirectory, "app")
     val appSrcDirectory = File(appDirectory, "src/main")
     val appManifestFile = File(appSrcDirectory, "AndroidManifest.xml")
@@ -35,6 +34,7 @@ class TestProjectGenerator(
             """                
                 pluginManagement {
                     repositories {
+                        mavenCentral()
                         google()
                     }
                 }
@@ -66,16 +66,16 @@ class TestProjectGenerator(
     private fun generateBuildScript(config: AppConfig?) {
         var gradleContent = """
             plugins {
-                id 'com.android.application'
-                id 'org.prototypic.coppy.generator'
+                id "com.android.application"
+                id "app.coppy"
             }
             
             android {
-                namespace = "com.prototypic.app"
+                namespace = "app.coppy.app"
                 compileSdk = 33
             
                 defaultConfig {
-                    applicationId "org.prototypic.app"
+                    applicationId "app.coppy.app"
                     minSdk 21
                     targetSdk 33
                     versionCode 1
@@ -88,7 +88,7 @@ class TestProjectGenerator(
         if (config != null) {
             gradleContent += """
                 |coppy {
-                |    spaceKey = "${config.spaceKey}"${if (config.updateType == null) "" else "\n|    updateType = \"${config.updateType}\""}${if (config.updateInterval == null) "" else "\n|    updateInterval = ${config.updateInterval}"}
+                |    contentKey = "${config.contentKey}"${if (config.updateType == null) "" else "\n|    updateType = \"${config.updateType}\""}${if (config.updateInterval == null) "" else "\n|    updateInterval = ${config.updateInterval}"}
                 |}
             """.trimMargin()
         }
@@ -99,7 +99,7 @@ class TestProjectGenerator(
         appManifestFile.writeText(
             """
                 <?xml version="1.0" encoding="utf-8"?>
-                <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.prorotypic.app">
+                <manifest xmlns:android="http://schemas.android.com/apk/res/android">
                     <application android:label="app">
                     </application>
                 </manifest>
@@ -108,7 +108,7 @@ class TestProjectGenerator(
     }
 
     class AppConfig(
-        val spaceKey: String,
+        val contentKey: String,
         val updateType: String?,
         val updateInterval: Int?
     )

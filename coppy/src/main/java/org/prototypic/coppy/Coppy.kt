@@ -1,4 +1,4 @@
-package org.prototypic.coppy
+package app.coppy
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -101,16 +101,16 @@ object CoppyUtils {
         val metaData = applicationInfo.metaData
         if (metaData == null) return null
 
-        val spaceKey = metaData.getString("org.prototypic.coppy.spaceKey")
-        val updateType = metaData.getString("org.prototypic.coppy.updateType", "default")
-        val updateInterval = metaData.getInt("org.prototypic.coppy.updateInterval", 30)
-        if (spaceKey == null) return null
+        val contentKey = metaData.getString("app.coppy.contentKey")
+        val updateType = metaData.getString("app.coppy.updateType", "default")
+        val updateInterval = metaData.getInt("app.coppy.updateInterval", 30)
+        if (contentKey == null) return null
 
         return CoppyConfig(
-            "https://content.coppy.app/${spaceKey}/content",
-            spaceKey,
+            "https://content.coppy.app/${contentKey}/content",
+            contentKey,
             context.packageManager.getPackageVersionCompat(context.packageName).toString(),
-            "${context.packageName}.coppy.${spaceKey}",
+            "${context.packageName}.coppy.${contentKey}",
             updateType,
             updateInterval)
     }

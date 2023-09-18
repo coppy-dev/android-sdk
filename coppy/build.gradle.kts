@@ -5,11 +5,11 @@ plugins {
     id("signing")
 }
 
-group = "org.prototypic.coppy"
+group = "app.coppy"
 version = "1.0.0-SNAPSHOT"
 
 android {
-    namespace = "org.prototypic.coppy"
+    namespace = "app.coppy"
     compileSdk = 33
 
     defaultConfig {

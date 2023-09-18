@@ -1,4 +1,4 @@
-package org.prototypic.coppy.plugin
+package app.coppy.plugin
 
 import org.json.JSONArray
 import org.json.JSONObject

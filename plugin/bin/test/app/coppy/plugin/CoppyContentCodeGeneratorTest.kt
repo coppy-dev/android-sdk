@@ -1,4 +1,4 @@
-package org.prototypic.coppy.plugin
+package app.coppy.plugin
 
 import org.json.JSONArray
 import org.json.JSONObject
@@ -1070,12 +1070,12 @@ class CoppyContentCodeGeneratorTest {
         val generated = CoppyContentCodeGenerator.generateContentFileContent(obj)
 
         val result="""
-            package org.prototypic.generatedCoppy
+            package app.coppy.generatedCoppy
 
             import org.json.JSONObject
             import org.json.JSONArray
             import java.io.Serializable
-            import org.prototypic.coppy.Updatable
+            import app.coppy.Updatable
 
             internal fun JSONObject.tryString(key: String): String? {
                 val temp = this.optString(key)
