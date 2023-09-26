@@ -100,7 +100,7 @@ At the moment there are few things you can configure in how Coppy SDK works:
 ```diff
 plugins {
     id("com.android.application")
-    id("app.coppy")
+    id("app.coppy") version("1.0.0")
 }
 
 coppy {
