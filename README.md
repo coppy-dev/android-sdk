@@ -7,15 +7,15 @@ Coppy SDK for Android consists of two major parts:
 
 ## Prerequisities
 
-1. **Android Compose UI toolkit**. At the moment, Coppy only works with projects that are built with Android Compose UI toolkit. Compose UI provide us with all necessary abstractions that allow us to effeciently update app copy in the runtime.
+1. **Android Compose UI toolkit**. At the moment, Coppy only works with projects that are built with the Android Compose UI toolkit. Compose UI provides us with all necessary abstractions that allow us to efficiently update app copy in the runtime.
 
-2. **Coppy content key**. Content key tells Coppy plugin and runtime SDK how to get your specific content. To get a content key, go to your [Coppy profile page](https://app.coppy.app/profile) and select sepcific team, which content you want to use in the Android app. The content key will righ tbelow the team name.
+2. **Coppy content key**. The content key tells the Coppy plugin and runtime SDK how to get your specific content. To get a content key, go to your [Coppy profile page](https://app.coppy.app/profile) and select a specific team, which content you want to use in the Android app. The content key will be right below the team name.
 
 ## Getting started
 
 ### Add plugin
 
-To get started with Coppy SDk, you need to add a Coppy plugin first. Add it to plugins section in your app `build.gradle` file. Then, add the content key to the Coppy plugin config:
+To get started with Coppy SDK, you need to add a Coppy plugin first. Add it to the plugins section in your app `build.gradle` file. Then, add the content key to the Coppy plugin config:
 
 ```diff
 plugins {
@@ -28,11 +28,11 @@ plugins {
 +}
 ```
 
-After that you need to run gradle sync and build the project, so Coppy plugin can generate runtime content classes
+After that, you need to run gradle sync and build the project so the Coppy plugin can generate runtime content classes.
 
 ### Using copy at runtime
 
-To use coppy in your app you need to first initializ it in your main activity:
+To use coppy in your app, you need to first initialize it in your main activity:
 
 ```diff
 +import app.coppy.Coppy
@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
-After that you can use coppy content in your component:
+Then, you can use coppy content in your component:
 
 ```diff
 +import app.coppy.Coppy
@@ -88,14 +88,14 @@ fun IntroScreen (
 
 ## Configuration
 
-At the moment there are few things you can configure in how Coppy SDK works:
+At the moment, there are a few things you can configure in how Coppy SDK works:
 
-1. **Update interval (`updateInterval`)** — interval in minutes for how often Coppy SDK should check for the new content version. By default it is 30 minutes.t
+1. **Update interval (`updateInterval`)** — interval in minutes for how often Coppy SDK should check for the new content version. By default, it is 30 minutes.t
 
-2. **Update type (`updateType`)** — defines how Coppy will update app copy in the runtime. Note, that it still will check for copy updates withing specified interval (`updateInterval`). But, depending on update type setting, it might not apply those changes immediately. Instead it will persist them locally and use for the next copy update.
-   - `default` — by default, Coppy will check only update copy when app is hard-reloaded (i.e user closes the app, and opens it again).
-   - `background` — Coppy will update the copy when app is backgrounded. Note, that because Compose UI does not run in background, the actual copy update will happen when the app is coming back from background into foreground.
-   - `foreground` — Coppy will will updat ethe copy in the app as soon as it gets the new version of content from the server.
+2. **Update type (`updateType`)** — defines how Coppy will update the app copy in the runtime. Note that it will still check for copy updates within specified intervals (`updateInterval`). But, depending on the update type setting, it might not apply those changes immediately. Instead, it will store them locally and will use them for the next copy update. By default, Coppy will check only update copy when app is hard-reloaded (i.e user closes the app, and opens it again).
+
+- `background` — Coppy will update the copy when the app is backgrounded. Note that because Compose UI does not run in the background, the actual copy update will happen when the app comes back from the background into the foreground.
+- `foreground` — Coppy will update the copy in the app as soon as it gets the new version of content from the server.
 
 ```diff
 plugins {
@@ -112,4 +112,4 @@ coppy {
 
 ## Ejecting
 
-If you no longer want to use Coppy and pay for it, you still can leave its SDK in your project. You don't need to make a huge app refactoring and replace all cases of using Coppy with hard-coded copy. Your copy will stay in the app for as long as you need to.
+If you no longer want to use Coppy and pay for it, you can still leave its SDK in your project. You don't need to make a huge app refactoring and replace all cases of using Coppy with the hard-coded copy. Your copy will stay in the app for as long as needed.
