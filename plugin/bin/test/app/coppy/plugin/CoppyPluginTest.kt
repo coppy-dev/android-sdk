@@ -1,4 +1,4 @@
-package org.prototypic.coppy.plugin
+package app.coppy.plugin
 
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.BuildResult
@@ -21,7 +21,7 @@ class CoppyPluginTest {
     private lateinit var manifestFile: File
     private lateinit var updatedManifestFile: File
 
-    var testSpaceKey = "9JS8jRHqyi4Vg0_DnqGTy"
+    var testContentKey = "9JS8jRHqyi4Vg0_DnqGTy"
 
     @BeforeEach
     fun setup() {
@@ -43,7 +43,7 @@ class CoppyPluginTest {
     @Test
     fun `Coppy Generator — generates correct content file`() {
         generator.generate(
-            TestProjectGenerator.AppConfig(testSpaceKey, null, null)
+            TestProjectGenerator.AppConfig(testContentKey, null, null)
         )
 
         assembleTestApp()
@@ -53,12 +53,12 @@ class CoppyPluginTest {
 
         val content = contentFile.readText()
         val expectedContent = """
-            package org.prototypic.generatedCoppy
+            package app.coppy.generatedCoppy
             
             import org.json.JSONObject
             import org.json.JSONArray
             import java.io.Serializable
-            import org.prototypic.coppy.Updatable
+            import app.coppy.Updatable
 
             internal fun JSONObject.tryString(key: String): String? {
                 val temp = this.optString(key)
@@ -87,7 +87,7 @@ class CoppyPluginTest {
     @Test
     fun `Coppy Generator — removes content when cleaning the project`() {
         generator.generate(
-            TestProjectGenerator.AppConfig(testSpaceKey, null, null)
+            TestProjectGenerator.AppConfig(testContentKey, null, null)
         )
 
         assembleTestApp()
@@ -103,34 +103,35 @@ class CoppyPluginTest {
 
         assertFalse(contentFile.exists())
     }
+
     @Test
     fun `Manifest updater — sets correct values for provided props in the manifest`() {
         generator.generate(
-            TestProjectGenerator.AppConfig(testSpaceKey, updateType = "testUpdateType", updateInterval = 15)
+            TestProjectGenerator.AppConfig(testContentKey, updateType = "foreground", updateInterval = 15)
         )
 
         assembleTestApp()
 
         assertTrue(updatedManifestFile.exists())
 
-        val (spaceKey, updateType, updateInterval) = getManifestValues(updatedManifestFile)
-        assertEquals(testSpaceKey, spaceKey)
-        assertEquals("testUpdateType", updateType)
+        val (contentKey, updateType, updateInterval) = getManifestValues(updatedManifestFile)
+        assertEquals(testContentKey, contentKey)
+        assertEquals("foreground", updateType)
         assertEquals(15, updateInterval)
     }
 
     @Test
     fun `Manifest updater — does not add "updateKey" if it is not set in gradle build`() {
         generator.generate(
-            TestProjectGenerator.AppConfig(testSpaceKey, null, null)
+            TestProjectGenerator.AppConfig(testContentKey, null, null)
         )
 
         assembleTestApp()
 
         assertTrue(updatedManifestFile.exists())
 
-        val (spaceKey, updateType, updateInterval) = getManifestValues(updatedManifestFile)
-        assertEquals(testSpaceKey, spaceKey)
+        val (contentKey, updateType, updateInterval) = getManifestValues(updatedManifestFile)
+        assertEquals(testContentKey, contentKey)
         assertEquals(30, updateInterval)
         assertEquals(null, updateType)
     }
@@ -148,25 +149,25 @@ class CoppyPluginTest {
                 }
             }
 
-    private fun getManifestValues(manifestFile: File): Triple<String, String?, Int> {
+    private fun getManifestValues(manifestFile: File): Triple<String?, String?, Int?> {
         val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val updatedDoc = docBuilder.parse(manifestFile)
 
         val xPathFactory = XPathFactory.newInstance()
         val xPath = xPathFactory.newXPath()
-        var spaceKeyPath =
-            "/manifest/application/meta-data[@*='org.prototypic.coppy.spaceKey']/@*[name()='android:value']"
-        val spaceKeyNode = xPath.evaluate(spaceKeyPath, updatedDoc, NODE) as Node
-        val spaceKey = spaceKeyNode.textContent
+        var contentKeyPath =
+            "/manifest/application/meta-data[@*='app.coppy.contentKey']/@*[name()='android:value']"
+        val contentKeyNode = xPath.evaluate(contentKeyPath, updatedDoc, NODE) as Node?
+        val contentKey = contentKeyNode?.textContent
 
-        val updateTypePath = "/manifest/application/meta-data[@*='org.prototypic.coppy.updateType']/@*[name()='android:value']"
+        val updateTypePath = "/manifest/application/meta-data[@*='app.coppy.updateType']/@*[name()='android:value']"
         val updateTypeNode = xPath.evaluate( updateTypePath, updatedDoc, NODE) as Node?
         val updateType = updateTypeNode?.textContent
 
-        val updateIntervalPath = "/manifest/application/meta-data[@*='org.prototypic.coppy.updateInterval']/@*[name()='android:value']"
+        val updateIntervalPath = "/manifest/application/meta-data[@*='app.coppy.updateInterval']/@*[name()='android:value']"
         val updateIntervalNode = xPath.evaluate(updateIntervalPath, updatedDoc, NODE) as Node?
         val updateInterval = updateIntervalNode?.textContent?.toInt() ?: 0
 
-        return Triple(spaceKey, updateType, updateInterval)
+        return Triple(contentKey, updateType, updateInterval)
     }
 }

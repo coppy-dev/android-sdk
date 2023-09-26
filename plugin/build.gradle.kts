@@ -7,58 +7,57 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 
-group = "org.prototypic.coppy.generator"
-version = "1.0.0-SNAPSHOT"
+group = "app.coppy"
+version = "1.0.0"
 
 gradlePlugin {
-    website.set("https://prototypic.org")
-    vcsUrl.set("https://github.com/coppy-dev/android-sdk.git")
-
     plugins {
-        create("generator") {
-            id = "org.prototypic.coppy.generator"
-            implementationClass = "org.prototypic.coppy.plugin.CoppyPlugin"
+        create("plugin") {
+            id = "app.coppy"
+            implementationClass = "app.coppy.plugin.CoppyPlugin"
             displayName = "Coppy"
             description =
                 "Plugin for Android application to generate Coppy content classes. Companion for the Coppy SDK."
-            tags.set(listOf("android", "coppy", "content", "sdk"))
         }
     }
 }
 
 publishing {
-    publications {
-        register<MavenPublication>("pluginMaven") {
-            groupId = group.toString()
+    afterEvaluate {
+        publications {
+            withType<MavenPublication>().configureEach {
+                groupId = "${project.group}"
+                version = "${project.version}"
 
-            pom {
-                name.set("Coppy Android SDK")
-                description.set("Coppy SDK: headles CMS for your app copy")
-                url.set("https://coppy.app")
-                inceptionYear.set("2023")
-                developers {
-                    developer {
-                        name.set("Coppy Team")
-                        organization.set("Prototypic")
-                        email.set("coppy@prototypic.org")
+                pom {
+                    name.set("Coppy Android SDK")
+                    description.set("Plugin for Android application to generate Coppy content classes. Companion for the Coppy SDK.")
+                    url.set("https://coppy.app")
+                    inceptionYear.set("2023")
+                    developers {
+                        developer {
+                            name.set("Coppy Team")
+                            organization.set("Coppy")
+                            email.set("team@coppy.app")
+                        }
                     }
-                }
-                organization {
-                    name.set("Prototypic")
-                    url.set("https://prototypic.org")
-                }
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://github.com/coppy-dev/android-sdk/blob/main/LICENSE")
+                    organization {
+                        name.set("Coppy")
+                        url.set("https://coppy.app")
                     }
-                }
-                scm {
-                    url.set("https://github.com/coppy-dev/android-sdk")
-                    connection.set("https://github.com/coppy-dev/android-sdk.git")
+                    licenses {
+                        license {
+                            name.set("MIT License")
+                            url.set("https://github.com/coppy-dev/android-sdk/blob/main/LICENSE")
+                        }
+                    }
+                    scm {
+                        url.set("https://github.com/coppy-dev/android-sdk")
+                        connection.set("https://github.com/coppy-dev/android-sdk.git")
+                    }
                 }
             }
         }
@@ -77,7 +76,7 @@ publishing {
                 password = project.property("ossrhPassword").toString()
             }
 
-            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/"
+            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
         }
@@ -85,12 +84,12 @@ publishing {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:7.3.1")
-    implementation("org.json:json:20180813")
-    implementation("org.apache.commons:commons-text:1.10.0")
+    implementation("com.android.tools.build:gradle:[7.3.1,)")
+    implementation("org.json:json:[20180813,)")
+    implementation("org.apache.commons:commons-text:[1.10.0,)")
 
     testImplementation(gradleTestKit())
-    testImplementation("com.android.tools:common:30.4.2")
+    testImplementation("com.android.tools:common:31.1.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }

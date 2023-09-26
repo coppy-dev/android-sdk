@@ -1,4 +1,4 @@
-package org.prototypic.coppy.plugin
+package app.coppy.plugin
 
 import org.apache.commons.text.StringEscapeUtils
 import org.json.JSONArray
@@ -7,12 +7,12 @@ import org.json.JSONObject
 @Suppress("unused")
 internal object CoppyContentCodeGenerator {
     val fileHeader = """
-       |package org.prototypic.generatedCoppy
+       |package app.coppy.generatedCoppy
        |
        |import org.json.JSONObject
        |import org.json.JSONArray
        |import java.io.Serializable
-       |import org.prototypic.coppy.Updatable
+       |import app.coppy.Updatable
        |
        |internal fun JSONObject.tryString(key: String): String? {
        |    val temp = this.optString(key)

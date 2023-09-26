@@ -1,4 +1,4 @@
-package org.prototypic.coppy.plugin
+package app.coppy.plugin
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -24,12 +24,12 @@ abstract class CoppyManifestTask : DefaultTask() {
     @TaskAction
     fun taskAction() {
         val extension = project.extensions.getByType(CoppyPluginExtension::class.java)
-        val spaceKey = extension.spaceKey
+        val contentKey = extension.contentKey
         val updateType = extension.updateType
         val updateInterval = extension.updateInterval
 
-        if (spaceKey == null) {
-            throw GradleException("Cannot find correct space key. Make sure you pass it into plugin config in your project gradle.build")
+        if (contentKey == null) {
+            throw GradleException("Cannot find correct content key. Make sure you pass it into plugin config in your project gradle.build")
         }
 
         try {
@@ -43,23 +43,31 @@ abstract class CoppyManifestTask : DefaultTask() {
                 "/manifest/application"
             val applicationItem = xPath.evaluate(path, doc, XPathConstants.NODE) as Node
 
-            // Space key
-            val spaceKeyElement = doc.createElement("meta-data")
-            spaceKeyElement.setAttribute("android:name", "org.prototypic.coppy.spaceKey")
-            spaceKeyElement.setAttribute("android:value", spaceKey)
-            applicationItem.appendChild(spaceKeyElement)
+            // Content key
+            val contentKeyElement = doc.createElement("meta-data")
+            contentKeyElement.setAttribute("android:name", "app.coppy.contentKey")
+            contentKeyElement.setAttribute("android:value", contentKey)
+            applicationItem.appendChild(contentKeyElement)
 
             // Update interval
             val updateIntervalElement = doc.createElement("meta-data")
-            updateIntervalElement.setAttribute("android:name", "org.prototypic.coppy.updateInterval")
+            updateIntervalElement.setAttribute("android:name", "app.coppy.updateInterval")
             updateIntervalElement.setAttribute("android:value", updateInterval?.toString()?: "30")
             applicationItem.appendChild(updateIntervalElement)
 
             // Update type
             if (updateType != null) {
+                var updateTypeAttribute = "default"
+                if (updateType == "background") {
+                    updateTypeAttribute = "background"
+                }
+                if (updateType == "foreground") {
+                    updateTypeAttribute = "foreground"
+                }
+
                 val updateTypeElement = doc.createElement("meta-data")
-                updateTypeElement.setAttribute("android:name", "org.prototypic.coppy.updateType")
-                updateTypeElement.setAttribute("android:value", updateType)
+                updateTypeElement.setAttribute("android:name", "app.coppy.updateType")
+                updateTypeElement.setAttribute("android:value", updateTypeAttribute)
                 applicationItem.appendChild(updateTypeElement)
             }
 
