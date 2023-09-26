@@ -6,7 +6,6 @@ import java.io.File
 class TestProjectGenerator(
     val projectDirectory: File,
 ) {
-
     val appDirectory = File(projectDirectory, "app")
     val appSrcDirectory = File(appDirectory, "src/main")
     val appManifestFile = File(appSrcDirectory, "AndroidManifest.xml")
@@ -35,6 +34,7 @@ class TestProjectGenerator(
             """                
                 pluginManagement {
                     repositories {
+                        mavenCentral()
                         google()
                     }
                 }
@@ -66,8 +66,8 @@ class TestProjectGenerator(
     private fun generateBuildScript(config: AppConfig?) {
         var gradleContent = """
             plugins {
-                id 'com.android.application'
-                id 'app.coppy'
+                id "com.android.application"
+                id "app.coppy"
             }
             
             android {
@@ -99,7 +99,7 @@ class TestProjectGenerator(
         appManifestFile.writeText(
             """
                 <?xml version="1.0" encoding="utf-8"?>
-                <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.prorotypic.app">
+                <manifest xmlns:android="http://schemas.android.com/apk/res/android">
                     <application android:label="app">
                     </application>
                 </manifest>

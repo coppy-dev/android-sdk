@@ -2,6 +2,7 @@ package app.coppy.plugin
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.dsl.AndroidSourceSet
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.variant.AndroidComponentsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project

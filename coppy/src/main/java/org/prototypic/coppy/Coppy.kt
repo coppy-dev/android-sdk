@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.json.JSONObject
 import java.io.*
@@ -19,40 +18,43 @@ import javax.net.ssl.HttpsURLConnection
 
 class CoppyUpdateWorker(val appContext: Context, workerParams: WorkerParameters): Worker(appContext, workerParams) {
     override fun doWork(): Result {
-        val config = CoppyUtils.getConfig(appContext)
-        if (config == null) {
-            return Result.success()
-        }
-        val properties = this.appContext.getSharedPreferences(config.propertiesKey, Context.MODE_PRIVATE)
-        val eTag = properties.getString("eTag", null)
-        val url = URL(config.contentUrl)
+        try {
+            val config = CoppyUtils.getConfig(appContext)
+            if (config == null) {
+                return Result.success()
+            }
+            val properties = this.appContext.getSharedPreferences(config.propertiesKey, Context.MODE_PRIVATE)
+            val eTag = properties.getString("eTag", null)
+            val url = URL(config.contentUrl)
 
-        if (eTag != null) {
-            val connection = url.openConnection() as HttpsURLConnection
-            connection.requestMethod = "HEAD"
-            val contentETag = connection.getHeaderField("Etag")
-            if (contentETag == eTag) return Result.success()
-        }
+            if (eTag != null) {
+                val connection = url.openConnection() as HttpsURLConnection
+                connection.requestMethod = "HEAD"
+                val contentETag = connection.getHeaderField("Etag")
+                if (contentETag == eTag) return Result.success()
+            }
 
-        if (Coppy._contentClass != null) {
-            val connection = url.openConnection() as HttpsURLConnection
-            val contentETag = connection.getHeaderField("Etag")
-            val content = readUrl(url)
+            if (Coppy._contentClass != null) {
+                val connection = url.openConnection() as HttpsURLConnection
+                val contentETag = connection.getHeaderField("Etag")
+                val content = readUrl(url)
 
-            val newContent = Coppy._contentClass!!.newInstance() as Updatable
-            newContent.update(content)
-            this.saveContent(newContent as Serializable, config)
-            properties.edit().putString("eTag", contentETag).apply()
+                val newContent = Coppy._contentClass!!.newInstance() as Updatable
+                newContent.update(content)
+                this.saveContent(newContent as Serializable, config)
+                properties.edit().putString("eTag", contentETag).apply()
 
-            if (config.updateType == "foreground") {
-                if (Coppy._content != null) {
-                    Coppy._content?.value = newContent
-                } else {
-                    Coppy._content = MutableStateFlow(newContent)
+                if (config.updateType == "foreground") {
+                    if (Coppy._content != null) {
+                        Coppy._content?.value = newContent
+                    } else {
+                        Coppy._content = MutableStateFlow(newContent)
+                    }
                 }
             }
+        } catch (err: Throwable) {
+            Log.e("CoppyUpdateWorker", err.message, err)
         }
-
         return Result.success()
     }
     private fun readUrl(url: URL): JSONObject {

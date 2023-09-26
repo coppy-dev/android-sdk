@@ -107,7 +107,7 @@ class CoppyPluginTest {
     @Test
     fun `Manifest updater — sets correct values for provided props in the manifest`() {
         generator.generate(
-            TestProjectGenerator.AppConfig(testContentKey, updateType = "testUpdateType", updateInterval = 15)
+            TestProjectGenerator.AppConfig(testContentKey, updateType = "foreground", updateInterval = 15)
         )
 
         assembleTestApp()
@@ -116,7 +116,7 @@ class CoppyPluginTest {
 
         val (contentKey, updateType, updateInterval) = getManifestValues(updatedManifestFile)
         assertEquals(testContentKey, contentKey)
-        assertEquals("testUpdateType", updateType)
+        assertEquals("foreground", updateType)
         assertEquals(15, updateInterval)
     }
 

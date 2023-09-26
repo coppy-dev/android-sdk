@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "app.coppy"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 android {
     namespace = "app.coppy"
@@ -22,11 +22,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     publishing {
         singleVariant("release") {
@@ -47,14 +47,17 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
+
 publishing {
     publications {
         register<MavenPublication>("release") {
-            artifactId = "core"
-
             afterEvaluate {
                 from(components["release"])
             }
+
+            artifactId = "core"
+            groupId = "${project.group}"
+            version = "${project.version}"
 
             pom {
                 name.set("Coppy Android SDK")
@@ -64,13 +67,13 @@ publishing {
                 developers {
                     developer {
                         name.set("Coppy Team")
-                        organization.set("Prototypic")
-                        email.set("coppy@prototypic.org")
+                        organization.set("Coppy")
+                        email.set("team@coppy.app")
                     }
                 }
                 organization {
-                    name.set("Prototypic")
-                    url.set("https://prototypic.org")
+                    name.set("Coppy")
+                    url.set("https://coppy.app")
                 }
                 licenses {
                     license {
@@ -99,7 +102,7 @@ publishing {
                 password = project.property("ossrhPassword").toString()
             }
 
-            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/"
+            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
         }
@@ -109,6 +112,7 @@ publishing {
 signing {
     sign(publishing.publications["release"])
 }
+
 
 
 

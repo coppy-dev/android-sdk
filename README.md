@@ -20,7 +20,7 @@ To get started with Coppy SDk, you need to add a Coppy plugin first. Add it to p
 ```diff
 plugins {
     id("com.android.application")
-+    id("app.coppy")
++    id("app.coppy") version("1.0.0")
 }
 
 +coppy {
@@ -106,7 +106,7 @@ plugins {
 coppy {
     contentKey = "<YOUR_CONTENT_KEY>"
 +    updateInterval = 15
-+    updateType = 'foreground
++    updateType = "foreground"
 }
 ```
 

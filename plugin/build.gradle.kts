@@ -11,54 +11,53 @@ kotlin {
 }
 
 group = "app.coppy"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 gradlePlugin {
-    website.set("https://coppy.app")
-    vcsUrl.set("https://github.com/coppy-dev/android-sdk.git")
-
     plugins {
-        create("generator") {
+        create("plugin") {
             id = "app.coppy"
             implementationClass = "app.coppy.plugin.CoppyPlugin"
             displayName = "Coppy"
             description =
                 "Plugin for Android application to generate Coppy content classes. Companion for the Coppy SDK."
-            tags.set(listOf("android", "coppy", "content", "sdk"))
         }
     }
 }
 
 publishing {
-    publications {
-        register<MavenPublication>("pluginMaven") {
-            groupId = group.toString()
+    afterEvaluate {
+        publications {
+            withType<MavenPublication>().configureEach {
+                groupId = "${project.group}"
+                version = "${project.version}"
 
-            pom {
-                name.set("Coppy Android SDK")
-                description.set("Plugin for Android application to generate Coppy content classes. Companion for the Coppy SDK.")
-                url.set("https://coppy.app")
-                inceptionYear.set("2023")
-                developers {
-                    developer {
-                        name.set("Coppy Team")
-                        organization.set("Coppy")
-                        email.set("team@coppy.app")
-                    }
-                }
-                organization {
-                    name.set("Coppy")
+                pom {
+                    name.set("Coppy Android SDK")
+                    description.set("Plugin for Android application to generate Coppy content classes. Companion for the Coppy SDK.")
                     url.set("https://coppy.app")
-                }
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://github.com/coppy-dev/android-sdk/blob/main/LICENSE")
+                    inceptionYear.set("2023")
+                    developers {
+                        developer {
+                            name.set("Coppy Team")
+                            organization.set("Coppy")
+                            email.set("team@coppy.app")
+                        }
                     }
-                }
-                scm {
-                    url.set("https://github.com/coppy-dev/android-sdk")
-                    connection.set("https://github.com/coppy-dev/android-sdk.git")
+                    organization {
+                        name.set("Coppy")
+                        url.set("https://coppy.app")
+                    }
+                    licenses {
+                        license {
+                            name.set("MIT License")
+                            url.set("https://github.com/coppy-dev/android-sdk/blob/main/LICENSE")
+                        }
+                    }
+                    scm {
+                        url.set("https://github.com/coppy-dev/android-sdk")
+                        connection.set("https://github.com/coppy-dev/android-sdk.git")
+                    }
                 }
             }
         }
@@ -77,7 +76,7 @@ publishing {
                 password = project.property("ossrhPassword").toString()
             }
 
-            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/"
+            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
         }

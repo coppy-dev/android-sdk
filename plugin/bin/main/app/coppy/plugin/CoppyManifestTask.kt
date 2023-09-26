@@ -57,9 +57,17 @@ abstract class CoppyManifestTask : DefaultTask() {
 
             // Update type
             if (updateType != null) {
+                var updateTypeAttribute = "default"
+                if (updateType == "background") {
+                    updateTypeAttribute = "background"
+                }
+                if (updateType == "foreground") {
+                    updateTypeAttribute = "foreground"
+                }
+
                 val updateTypeElement = doc.createElement("meta-data")
                 updateTypeElement.setAttribute("android:name", "app.coppy.updateType")
-                updateTypeElement.setAttribute("android:value", updateType)
+                updateTypeElement.setAttribute("android:value", updateTypeAttribute)
                 applicationItem.appendChild(updateTypeElement)
             }
 
