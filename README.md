@@ -92,7 +92,7 @@ At the moment, there are a few things you can configure in how Coppy SDK works:
 
 1. **Update interval (`updateInterval`)** — interval in minutes for how often Coppy SDK should check for the new content version. By default, it is 30 minutes.t
 
-2. **Update type (`updateType`)** — defines how Coppy will update the app copy in the runtime. Note that it will still check for copy updates within specified intervals (`updateInterval`). But, depending on the update type setting, it might not apply those changes immediately. Instead, it will store them locally and will use them for the next copy update. By default, Coppy will check only update copy when app is hard-reloaded (i.e user closes the app, and opens it again).
+2. **Update type (`updateType`)** — defines how Coppy will update the app copy in the runtime. Note that it will still check for copy updates within specified intervals (`updateInterval`). But, depending on the update type setting, it might not apply those changes immediately. Instead, it will store them locally and will use them for the next copy update. By default (if option is not set), Coppy will check only update copy when app is hard-reloaded (i.e user closes the app, and opens it again).
    - `background` — Coppy will update the copy when the app is backgrounded. Note that because Compose UI does not run in the background, the actual copy update will happen when the app comes back from the background into the foreground.
    - `foreground` — Coppy will update the copy in the app as soon as it gets the new version of content from the server.
 
