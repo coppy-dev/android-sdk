@@ -10,6 +10,7 @@ Coppy SDK for Android consists of two major parts:
 1. **Android Compose UI toolkit**. At the moment, Coppy only works with projects that are built with the Android Compose UI toolkit. Compose UI provides us with all necessary abstractions that allow us to efficiently update app copy in the runtime.
 
 2. **Coppy content key**. The content key tells the Coppy plugin and runtime SDK how to get your specific content. To get a content key, go to your [Coppy profile page](https://app.coppy.app/profile) and select a specific team, which content you want to use in the Android app. The content key will be right below the team name.
+<img src="https://github.com/coppy-dev/android-sdk/assets/112951687/4989e6bd-3f4c-46e3-9000-9d3be6699f39" width="1280" alt="Content key" />
 
 ## Getting started
 
