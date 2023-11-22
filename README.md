@@ -11,9 +11,9 @@ Coppy SDK for Android consists of two major parts:
 
 2. **Coppy content key**. The content key tells the Coppy plugin and runtime SDK how to get your specific content. To get a content key, go to your [Coppy profile page](https://app.coppy.app/profile) and select a specific team, which content you want to use in the Android app. The content key will be right below the team name.
 <picture width="1280" role="presentation">
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/coppy-dev/ios-sdk/assets/112951687/0b24e8a0-aa18-4905-bb9e-aa4f63a588e6" />
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/coppy-dev/ios-sdk/assets/112951687/6423b3bb-c5d4-4478-9a60-39bf3216e32c" />
-    <img src="https://github.com/coppy-dev/ios-sdk/assets/112951687/6423b3bb-c5d4-4478-9a60-39bf3216e32c" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://coppy.app/images/docs/content-key-dark.png" />
+    <source media="(prefers-color-scheme: light)" srcset="https://coppy.app/images/docs/content-key.png" />
+    <img src="https://coppy.app/images/docs/content-key.png" />
 </picture>
 
 ## Getting started
